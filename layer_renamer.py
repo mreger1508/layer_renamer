@@ -25,6 +25,7 @@ from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication, Qt
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
 from qgis.core import QgsProject
+
 # Initialize Qt resources from file resources.py
 from .resources import *
 
@@ -233,6 +234,8 @@ class LayerRenamer:
             self.dockwidget.show()
             self.dockwidget.progressBar.setValue(0)
 
+        def show_progress(progress):
+            self.dockwidget.progressBar.setValue(progress)
 
         def change():
             # get user input
@@ -241,6 +244,13 @@ class LayerRenamer:
 
             # get layers
             layers = QgsProject.instance().mapLayers().values()
+
+            # get number of layers
+            sum = len(layers)
+            progress = 0
+
+            # set progress bar to 0
+            show_progress(0)
 
             # iterate over all layers if there's the search text and replace it
             for layer in layers:
@@ -251,7 +261,14 @@ class LayerRenamer:
 
                     # rename layer
                     layer.setName(new_name)
-            self.dockwidget.progressBar.setValue(100)
+
+                # update progressBar  
+                progress += 1
+                percent = progress/sum * 100
+                show_progress(percent)
+                print(percent)
+
+            #self.dockwidget.progressBar.setValue(100)
 
             
         self.dockwidget.start.clicked.connect(change)
