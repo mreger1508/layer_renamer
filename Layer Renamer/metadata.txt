@@ -6,7 +6,7 @@
 name=Layer Renamer
 qgisMinimumVersion=3.0
 description=Rename project layers
-version=0.1.5
+version=0.1.6
 author=Martin Reger
 email=martin150897@gmail.com
 
