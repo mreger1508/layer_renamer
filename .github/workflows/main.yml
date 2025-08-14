@@ -20,13 +20,13 @@ jobs:
       - name: Create clean plugin zip
         run: |
           mkdir build
-          cp -r Layer Renamer build/Layer Renamer
+          cp -r "Layer Renamer" "build/Layer Renamer"
           cd build
-          zip -r ../Layer Renamer.zip Layer Renamer
+          zip -r "../Layer Renamer.zip" "Layer Renamer"
 
       - name: Create GitHub Release and upload ZIP
         uses: softprops/action-gh-release@v1
         with:
-          files: LayerRenamer.zip
+          files: "Layer Renamer.zip"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
