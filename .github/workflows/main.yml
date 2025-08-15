@@ -9,13 +9,37 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     permissions:
       contents: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Get version from tag
+        id: get_version
+        run: |
+          # Entferne Präfixe wie v oder version_
+          VERSION="${GITHUB_REF_NAME#v}"
+          VERSION="${VERSION#version_}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Generate metadata.txt
+        run: |
+          cat > "Layer Renamer/metadata.txt" <<EOF
+          [general]
+          name=Layer Renamer
+          qgisMinimumVersion=3.0
+          description=Rename Map Layers
+          version=${{ steps.get_version.outputs.version }}
+          author=mreger1508
+          email=martin150897@gmail.com
+          about=This plugin allows you to search and replace maplayers names
+          tracker=https://github.com/${{ github.repository }}/issues
+          repository=https://github.com/${{ github.repository }}
+          experimental=False
+          deprecated=False
+          EOF
 
       - name: Create clean plugin zip
         run: |
